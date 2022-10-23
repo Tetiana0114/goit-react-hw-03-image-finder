@@ -1,14 +1,12 @@
-// import PropTypes from 'prop-types';
-
-
-const ImageGalleryItem = ({ url, name } ) => {
-  return <li className="gallery_item">
-    <img src={url} alt={name} />
+const ImageGalleryItem = ({ tags, webFormat, largeFormat }) => {
+    return ( <li className="gallery_item">
+    <img 
+    src={webFormat} 
+    alt={tags}
+    data-source={largeFormat}
+    />
     </li>
-};
+    );
+}
 
-// ImageGalleryItem.propTypes = {
-//   url: PropTypes.string.isRequired,
-//   name: PropTypes.string.isRequired,
-// };
 export default ImageGalleryItem;

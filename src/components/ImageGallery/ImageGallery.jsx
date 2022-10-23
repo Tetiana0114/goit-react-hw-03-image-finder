@@ -1,15 +1,17 @@
-// import PropTypes from 'prop-types';
 import ImageGalleryItem from 'components/ImageGalleryItem';
 
-
-const ImageGallery = ({ } ) => {
-    return <ul className="gallery">
-        <ImageGalleryItem/>
+const ImageGallery = ({ images }) => {
+  return (
+    <ul>{images.map(image => (
+      <ImageGalleryItem
+      key={image.id}
+      webFormat={image.webformatURL}
+      largeFormat={image.largeImageURL}
+      tags={image.tags}
+      />
+      ))}
   </ul>
-};
-    
+  )
   
-// ImageGallery.propTypes = {
-    
-//   };
+}
 export default ImageGallery;
