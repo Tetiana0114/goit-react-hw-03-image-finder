@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import css from './Searchbar.module.css'
 // import PropTypes from 'prop-types';
 
 export default class SearchBar extends Component {
@@ -14,7 +15,7 @@ export default class SearchBar extends Component {
   onSubmit = e => {
     e.preventDefault();
     if(this.state.searchName.trim() === '') {
-      Notify.info('Введіть текст!');
+      Notify.info('Please, enter your request!');
       return;
     }
     this.props.onSubmit(this.state.searchName);
@@ -24,10 +25,10 @@ export default class SearchBar extends Component {
   render () {
   
     return (
-  <header className="search_bar">
-    <form className="form" onSubmit={this.onSubmit}>
+  <header className={css.search_bar}>
+    <form className={css.searchForm} onSubmit={this.onSubmit}>
       <input
-        className="input"
+        className={css.searchForm_input}
         type="text"
         autoComplete="off"
         autoFocus
@@ -36,8 +37,8 @@ export default class SearchBar extends Component {
         onChange={this.onChangeInput}
       />
 
-       <button type="submit" className="button">
-        <span className="button-label"><FaSearch size={18}/></span>
+       <button type="submit" className={css.searchForm_button}>
+        <span className={css.searchForm_button_label}><FaSearch size={18}/></span>
       </button>
 
     </form>
