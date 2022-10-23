@@ -1,41 +1,40 @@
 import React, { Component } from 'react';
-import SearchBar from 'components/Searchbar';
-import ImageGallery from 'components/ImageGallery';
 import API from './Services/FetchGallery';
 import css from './App.module.css'
+import SearchBar from 'components/Searchbar';
+import ImageGallery from 'components/ImageGallery';
+import Button from 'components/Button';
 
 
 export class App extends Component {
   state = {
-    query: '',
-    images: [],
     page: 1, 
+    query: '',
+    items: [],
     status: 'idle',
     error: '',
   }
 handleSearchFormSubmit =  query => {
   this.fetchGallery(query, this.state.page);
 }
+componentDidUpdate(_, prevState) {
+  if ( prevState.query !== this.state.query || prevState.page !== this.state.page)  {
+    this.setState({ status: 'pending', page: 1, items: [] });
+    this.fetchGallery(this.state.query, this.state.page);
+    }
+}
 
-componentDidUpdate(prevProps, prevState) {
-  const prevQuery = prevState.query;
-  const nextQuery = this.state.query;
-  const prevPage = prevState.page;
-  const nextPage = this.state.page;
-
-if (prevQuery !== nextQuery) {
-  this.setState({ status: 'pending', page: 1, images: [] });
-  this.fetchGallery(nextQuery, nextPage);
-}
-if (prevPage !== nextPage) {
-  this.fetchGallery(nextQuery, nextPage);
-}
-}
+loadMore = () => {
+  this.setState(prevState => ({
+    page: prevState.page + 1
+    
+  }));
+};
 
 fetchGallery(nextQuery, nextPage) {
   API.fetchGallery(nextQuery, nextPage)
   .then(data => {this.setState(prevState => {
-    return { prevState, images: [...prevState.images, ...data.hits], status: 'resolved', query: nextQuery,
+    return { prevState, items: [...prevState.items, ...data.hits], status: 'resolved', query: nextQuery,
   };
 });
 if (this.prevPage !== nextPage) {
@@ -61,7 +60,8 @@ return (
     >
   <SearchBar onSubmit={this.handleSearchFormSubmit}/>
   {this.state.status === 'idle' && <p className={css.text}>Enter your query...</p>}
-  <ImageGallery images={this.state.images}/>
+  <ImageGallery images={this.state.items}/>
+  <Button onClick={this.loadMore}/>
  
 
     </div>
