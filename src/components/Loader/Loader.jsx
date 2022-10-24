@@ -1,13 +1,13 @@
 import { ThreeDots } from  'react-loader-spinner';
 
 const Loader = ( ) => {
-    return <ThreeDots 
+    return <ThreeDots
     height="80" 
     width="80" 
     radius="9"
-    color="#4fa94d" 
+    color="#0a6344" 
     ariaLabel="three-dots-loading"
-    wrapperStyle={{}}
+    wrapperStyle={{  display: 'flex', justifyContent: 'center' }}
     wrapperClassName=""
     visible={true}
      />

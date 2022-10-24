@@ -1,22 +1,21 @@
-import css from './ImageGalleryItem.module.css';
 import PropTypes from 'prop-types';
+import css from './ImageGalleryItem.module.css';
 
-const ImageGalleryItem = ({ tags, webFormat, largeFormat }) => {
+const ImageGalleryItem = ({ tags, smallImg, largeImg }) => {
     return ( <li className={css.imageGalleryItem}>
     <img className={css.imageGalleryItem_image}
-    src={webFormat} 
+    src={smallImg} 
     alt={tags}
-    data-source={largeFormat}
+    data-source={largeImg}
     />
     </li>
     );
 }
 
-export default ImageGalleryItem;
-
-
 ImageGalleryItem.propTypes = {
-webFormat: PropTypes.string.isRequired,
+smallImg: PropTypes.string.isRequired,
+largeImg: PropTypes.string.isRequired,
 tags: PropTypes.string.isRequired,
-largeFormat: PropTypes.string.isRequired,
 };
+
+export default ImageGalleryItem;

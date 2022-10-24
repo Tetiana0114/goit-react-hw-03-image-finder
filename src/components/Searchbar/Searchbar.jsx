@@ -1,8 +1,8 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FaSearch } from "react-icons/fa";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import css from './Searchbar.module.css'
-import PropTypes from 'prop-types';
 
 export default class SearchBar extends Component {
   state = {
