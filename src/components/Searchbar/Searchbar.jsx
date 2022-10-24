@@ -2,17 +2,18 @@ import { Component } from 'react';
 import { FaSearch } from "react-icons/fa";
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import css from './Searchbar.module.css'
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 export default class SearchBar extends Component {
   state = {
     searchName: '',
   }
   
-  onChangeInput = e => {
+onChangeInput = e => {
     this.setState({ searchName: e.currentTarget.value.toLowerCase() });
   };
-  onSubmit = e => {
+
+onSubmit = e => {
     e.preventDefault();
     if(this.state.searchName.trim() === '') {
       Notify.info('Please, enter your request!');
@@ -22,10 +23,10 @@ export default class SearchBar extends Component {
     this.setState({ searchName: '' });
   };
 
-  render () {
+render () {
   
     return (
-  <header className={css.search_bar}>
+<header className={css.search_bar}>
     <form className={css.searchForm} onSubmit={this.onSubmit}>
       <input
         className={css.searchForm_input}
@@ -42,7 +43,11 @@ export default class SearchBar extends Component {
       </button>
 
     </form>
-  </header>
+</header>
       );
     }
     };
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

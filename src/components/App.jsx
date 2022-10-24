@@ -4,6 +4,7 @@ import css from './App.module.css'
 import SearchBar from 'components/Searchbar';
 import ImageGallery from 'components/ImageGallery';
 import Button from 'components/Button';
+import Loader from 'components/Loader';
 
 
 export class App extends Component {
@@ -61,7 +62,8 @@ return (
   <SearchBar onSubmit={this.handleSearchFormSubmit}/>
   {this.state.status === 'idle' && <p className={css.text}>Enter your query...</p>}
   <ImageGallery images={this.state.items}/>
-  <Button onClick={this.loadMore}/>
+  <Loader/>
+  <Button loadMore={this.loadMore}/>
  
 
     </div>
