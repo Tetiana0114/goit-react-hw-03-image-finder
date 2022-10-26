@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import fetchGallery from './Services/FetchGallery';
-// import css from './App.module.css'
+import css from './App.module.css'
 import SearchBar from 'components/Searchbar';
 import ImageGallery from 'components/ImageGallery';
 import Button from 'components/Button';
@@ -10,6 +10,7 @@ import Loader from 'components/Loader';
 
 export class App extends Component {
   state = {
+    error: null,
     query: '',
     items: [],
     page: 0, 
@@ -28,13 +29,16 @@ async componentDidUpdate(_, prevState) {
     if (newItems.totalHits !== 0) {
       this.setState({
         items: [...this.state.items, ...newItems.hits],
-        loading: false,
-        })} else {
+        })} 
+        else {
           Notify.failure('Sorry, there are no images with this name.');
         }
         }
-    catch (error) {console.log(error)}
-    finally {this.setState({ loading: false });
+    catch (error) {
+      this.setState({ error })
+    }
+    finally {
+      this.setState({ loading: false });
       }
     }
 }
@@ -57,7 +61,7 @@ loadMore = () => {
 
 
 render () {
-const { items, loading } = this.state;
+const { items, loading, error } = this.state;
 const showComponent = items.length > 0;
 
 return (
@@ -70,9 +74,10 @@ return (
     }}
     >
 <SearchBar onSubmit={this.handleSearchFormSubmit}/>
+{error && <p className={css.text}>Whoops, something went wrong...</p>}
 {showComponent && (<ImageGallery items={items}/>)}
 {loading && (<Loader/>)}
-{showComponent && (<Button loadMore={this.loadMore}/>)}
+{showComponent && (<Button onClick={this.loadMore}/>)}
     </div>
   );
 }
