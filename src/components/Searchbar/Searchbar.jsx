@@ -16,7 +16,7 @@ onChangeInput = e => {
 onSubmit = e => {
     e.preventDefault();
     if(this.state.searchName.trim() === '') {
-      Notify.info('Please, enter your request!');
+      Notify.info('Please, enter your search query!');
       return;
     }
     this.props.onSubmit(this.state.searchName);
@@ -24,6 +24,7 @@ onSubmit = e => {
   };
 
 render () {
+  const { searchName } = this.state;
   
     return (
 <header className={css.search_bar}>
@@ -34,7 +35,7 @@ render () {
         autoComplete="off"
         autoFocus
         placeholder="Search images and photos"
-        value={this.state.searchName}
+        value={searchName}
         onChange={this.onChangeInput}
       />
 

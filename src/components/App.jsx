@@ -10,11 +10,34 @@ import Loader from 'components/Loader';
 
 export class App extends Component {
   state = {
-    page: 1, 
     query: '',
     items: [],
+    page: 0, 
     loading: false,
   }
+
+async componentDidUpdate(_, prevState) {
+    const prevQuery = prevState.query;
+    const prevPage = prevState.page;
+    const newQuery = this.state.query;
+    const newPage = this.state.page;
+    if (prevQuery !== newQuery || prevPage !== newPage) {
+    this.setState({ loading: true });
+    try {
+      const newItems = await fetchGallery({query: newQuery, page: newPage});
+    if (newItems.totalHits !== 0) {
+      this.setState({
+        items: [...this.state.items, ...newItems.hits],
+        loading: false,
+        })} else {
+          Notify.failure('Sorry, there are no images with this name.');
+        }
+        }
+    catch (error) {console.log(error)}
+    finally {this.setState({ loading: false });
+      }
+    }
+}
 
 handleSearchFormSubmit = queryName => {
   this.setState({
@@ -23,25 +46,6 @@ handleSearchFormSubmit = queryName => {
     items: [],
     loading: true,
   });
-}
-
-async componentDidUpdate(_, prevState) {
-  if (prevState.query !== this.state.query || prevState.page !== this.state.page) {
-  this.setState({ loading: true });
-  try {
-    const newItems = await fetchGallery({query: this.state.query, page: this.state.page});
-  if (newItems.totalHits !== 0) {
-    this.setState({
-      items: [...this.state.items, ...newItems.hits],
-      loading: false,
-      })} else {
-        Notify.failure('Sorry, there are no images with this name.');
-      }
-      }
-  catch (error) {console.log(error)}
-  finally {this.setState({ loading: false });
-    }
-  }
 }
 
 loadMore = () => {
@@ -53,7 +57,8 @@ loadMore = () => {
 
 
 render () {
-  const { loading, items } = this.state;
+const { items, loading } = this.state;
+const showComponent = items.length > 0;
 
 return (
     <div
@@ -64,11 +69,10 @@ return (
       color: '#010101'
     }}
     >
-  <SearchBar onSubmit={this.handleSearchFormSubmit}/>
-  {/* {this.state.status === 'idle' && <p className={css.text}>Enter your query...</p>} */}
-  {loading && (<Loader/>)}
-  <ImageGallery images={items}/>
-  {items.length > 0 && (<Button loadMore={this.loadMore}/>)}
+<SearchBar onSubmit={this.handleSearchFormSubmit}/>
+{showComponent && (<ImageGallery items={items}/>)}
+{loading && (<Loader/>)}
+{showComponent && (<Button loadMore={this.loadMore}/>)}
     </div>
   );
 }
